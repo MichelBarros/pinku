@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: Michel880612
+    url: jdbc:mysql://testdatabase.cagqok3rgo30.us-east-1.rds.amazonaws.com:3306/testdatabase?serverTimezone=UTC
+    username: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
