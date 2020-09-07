@@ -24,7 +24,6 @@ public class ProductoController {
 
     @RequestMapping(value = "{productoId}")
     public ResponseEntity<Producto> getProductoById(@PathVariable("productoId") Producto producto){
-
         if(producto != null){
             Optional<Producto> productos = productoRepository.findById(producto.getId());
             return ResponseEntity.ok(productos.get());
@@ -60,6 +59,32 @@ public class ProductoController {
         }
     }
 
-    // Implement Patch HTTP method
+    @PatchMapping(value = "{productoId}")
+    public ResponseEntity<Producto> partialUpdateProducto(@PathVariable("productoId") String productoId, @RequestBody Producto producto){
+        Optional<Producto> productos = productoRepository.findById(productoId);
+        if(productos.isPresent()){
+            Producto partialUpdateProducto = productos.get();
+            if(producto.getTipo() != null){
+                partialUpdateProducto.setTipo(producto.getTipo());
+            }
+
+            if(producto.getTalla() != null){
+                partialUpdateProducto.setTalla(producto.getTalla());
+            }
+
+            if(producto.getColor() != null){
+                partialUpdateProducto.setColor(producto.getColor());
+            }
+
+            if(producto.getPrecio() != partialUpdateProducto.getPrecio()){
+                partialUpdateProducto.setPrecio(producto.getPrecio());
+            }
+
+            productoRepository.save(partialUpdateProducto);
+            return ResponseEntity.ok(partialUpdateProducto);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
