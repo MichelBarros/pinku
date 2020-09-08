@@ -38,4 +38,22 @@ public class TipoUsuarioController {
         return ResponseEntity.ok(newTipoUsuario);
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteTipoUsuario(@PathVariable("tipoUsuarioId") Long tipoUsuarioId){
+        tipoUsuarioRepository.deleteById(tipoUsuarioId);
+        return ResponseEntity.ok(null);
+    }
+
+    @PutMapping
+    public ResponseEntity<TipoUsuario> updateTipoUsuario(@RequestBody TipoUsuario tipoUsuario){
+        if(tipoUsuario != null){
+            Optional<TipoUsuario> tipoUsuarios = tipoUsuarioRepository.findById(tipoUsuario.getId());
+            TipoUsuario updateTipoUsuario = tipoUsuarios.get();
+            updateTipoUsuario.setTipo(tipoUsuario.getTipo());
+            return ResponseEntity.ok(updateTipoUsuario);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

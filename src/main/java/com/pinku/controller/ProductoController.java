@@ -32,6 +32,8 @@ public class ProductoController {
         }
     }
 
+    //Implementar paginacion y filtros
+
     @PostMapping
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto){
         Producto newProducto = productoRepository.save(producto);
