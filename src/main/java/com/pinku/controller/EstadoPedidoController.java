@@ -38,7 +38,7 @@ public class EstadoPedidoController {
         return ResponseEntity.ok(newEstadoPedido);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "{estadoPedidoId}")
     public ResponseEntity<Void> deleteEstadoPedido(@PathVariable("estadoPedidoId") Long estadoPedidoId){
         estadoPedidoRepository.deleteById(estadoPedidoId);
         return ResponseEntity.ok(null);
@@ -51,6 +51,7 @@ public class EstadoPedidoController {
             EstadoPedido updateEstadoPedido = estadoPedidos.get();
             updateEstadoPedido.setDescripcion(estadoPedido.getDescripcion());
             updateEstadoPedido.setCierra(estadoPedido.isCierra());
+            estadoPedidoRepository.save(updateEstadoPedido);
             return ResponseEntity.ok(updateEstadoPedido);
         }else{
             return ResponseEntity.notFound().build();

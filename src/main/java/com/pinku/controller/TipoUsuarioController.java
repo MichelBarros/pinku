@@ -38,7 +38,7 @@ public class TipoUsuarioController {
         return ResponseEntity.ok(newTipoUsuario);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "{tipoUsuarioId}")
     public ResponseEntity<Void> deleteTipoUsuario(@PathVariable("tipoUsuarioId") Long tipoUsuarioId){
         tipoUsuarioRepository.deleteById(tipoUsuarioId);
         return ResponseEntity.ok(null);
@@ -50,6 +50,7 @@ public class TipoUsuarioController {
             Optional<TipoUsuario> tipoUsuarios = tipoUsuarioRepository.findById(tipoUsuario.getId());
             TipoUsuario updateTipoUsuario = tipoUsuarios.get();
             updateTipoUsuario.setTipo(tipoUsuario.getTipo());
+            tipoUsuarioRepository.save(updateTipoUsuario);
             return ResponseEntity.ok(updateTipoUsuario);
         }else{
             return ResponseEntity.notFound().build();

@@ -2,6 +2,7 @@ package com.pinku.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name="pinku_tipo_usuario")

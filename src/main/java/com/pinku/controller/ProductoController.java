@@ -40,7 +40,7 @@ public class ProductoController {
         return ResponseEntity.ok(newProducto);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "{productoId}")
     public ResponseEntity<Void> deleteProducto(@PathVariable("productoId") String productoId){
         productoRepository.deleteById(productoId);
         return ResponseEntity.ok(null);
@@ -55,6 +55,7 @@ public class ProductoController {
             updateProducto.setTalla(producto.getTalla());
             updateProducto.setColor(producto.getColor());
             updateProducto.setPrecio(producto.getPrecio());
+            productoRepository.save(updateProducto);
             return ResponseEntity.ok(updateProducto);
         }else{
             return ResponseEntity.notFound().build();
