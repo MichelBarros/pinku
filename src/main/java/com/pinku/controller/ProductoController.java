@@ -52,8 +52,6 @@ public class ProductoController {
             Optional<Producto> productos = productoRepository.findById(producto.getId());
             Producto updateProducto = productos.get();
             updateProducto.setTipo(producto.getTipo());
-            updateProducto.setTalla(producto.getTalla());
-            updateProducto.setColor(producto.getColor());
             updateProducto.setPrecio(producto.getPrecio());
             productoRepository.save(updateProducto);
             return ResponseEntity.ok(updateProducto);
@@ -69,14 +67,6 @@ public class ProductoController {
             Producto partialUpdateProducto = productos.get();
             if(producto.getTipo() != null){
                 partialUpdateProducto.setTipo(producto.getTipo());
-            }
-
-            if(producto.getTalla() != null){
-                partialUpdateProducto.setTalla(producto.getTalla());
-            }
-
-            if(producto.getColor() != null){
-                partialUpdateProducto.setColor(producto.getColor());
             }
 
             if(producto.getPrecio() != partialUpdateProducto.getPrecio()){

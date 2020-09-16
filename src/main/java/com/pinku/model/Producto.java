@@ -5,7 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Table(name = "pinku_producto")
@@ -26,10 +25,6 @@ public class Producto {
     @NotNull
     private String tipo;
 
-    private String talla;
-
-    private String color;
-
     @NotNull
     private double precio;
 
@@ -40,14 +35,6 @@ public class Producto {
     public Producto(String id, @NotNull String tipo, @NotNull double precio) {
         this.id = id;
         this.tipo = tipo;
-        this.precio = precio;
-    }
-
-    public Producto(String id, @NotNull String tipo, String talla, String color, @NotNull double precio) {
-        this.id = id;
-        this.tipo = tipo;
-        this.talla = talla;
-        this.color = color;
         this.precio = precio;
     }
 
@@ -65,22 +52,6 @@ public class Producto {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getTalla() {
-        return talla;
-    }
-
-    public void setTalla(String talla) {
-        this.talla = talla;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
     }
 
     public double getPrecio() {
