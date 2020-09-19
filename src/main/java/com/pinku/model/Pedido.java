@@ -23,10 +23,11 @@ public class Pedido {
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
-    @NotNull
     private String direccionEntrega;
 
-    @NotNull
+    @Column(name = "nombre_destinatario")
+    private String nombreDestinatario;
+
     private String observaciones;
 
     @NotNull
@@ -46,10 +47,11 @@ public class Pedido {
 
     }
 
-    public Pedido(String id, @NotNull String direccionEntrega, @NotNull String observaciones,
+    public Pedido(String id, String direccionEntrega, String nombreDestinatario, String observaciones,
                   @NotNull double total, Ciudad ciudad, Usuario usuario) {
         this.id = id;
         this.direccionEntrega = direccionEntrega;
+        this.nombreDestinatario = nombreDestinatario;
         this.observaciones = observaciones;
         this.total = total;
         this.ciudad = ciudad;
@@ -70,6 +72,14 @@ public class Pedido {
 
     public void setDireccionEntrega(String direccionEntrega) {
         this.direccionEntrega = direccionEntrega;
+    }
+
+    public String getNombreDestinatario() {
+        return nombreDestinatario;
+    }
+
+    public void setNombreDestinatario(String nombreDestinatario) {
+        this.nombreDestinatario = nombreDestinatario;
     }
 
     public String getObservaciones() {
@@ -103,4 +113,5 @@ public class Pedido {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
 }

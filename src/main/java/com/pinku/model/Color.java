@@ -14,7 +14,7 @@ public class Color {
     @NotNull
     private String codigo;
 
-    @Column(name = "nombre_color")
+    @Column(name = "nombre_color", unique = true)
     private String nombreColor;
 
     public Color() {

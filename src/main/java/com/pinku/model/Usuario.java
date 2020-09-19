@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,7 @@ public class Usuario {
 
     private String otrosNombres;
 
+    @NotNull
     private String apellidos;
 
     @NotNull
@@ -33,6 +35,11 @@ public class Usuario {
 
     @NotNull
     private String direccion;
+
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_nacimiento")
+    private Calendar fechaNacimiento;
 
     @ManyToOne
     @JoinColumn(name = "id_tipo_usuario", nullable = true)
@@ -49,8 +56,9 @@ public class Usuario {
     }
 
     public Usuario(Long id, @NotNull String primerNombre, String otrosNombres, String apellidos,
-                   @NotNull Long celular, @NotNull String email, @NotNull String clave,
-                   @NotNull String direccion, TipoUsuario tipoUsuario, Ciudad ciudad) {
+                   @NotNull Long celular, @NotNull @Email String email, @NotNull String clave,
+                   @NotNull String direccion, @NotNull Calendar fechaNacimiento,
+                   TipoUsuario tipoUsuario, Ciudad ciudad) {
         this.id = id;
         this.primerNombre = primerNombre;
         this.otrosNombres = otrosNombres;
@@ -59,6 +67,7 @@ public class Usuario {
         this.email = email;
         this.clave = clave;
         this.direccion = direccion;
+        this.fechaNacimiento = fechaNacimiento;
         this.tipoUsuario = tipoUsuario;
         this.ciudad = ciudad;
     }
@@ -127,6 +136,14 @@ public class Usuario {
         this.direccion = direccion;
     }
 
+    public Calendar getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Calendar fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
     public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
@@ -142,4 +159,5 @@ public class Usuario {
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
     }
+
 }

@@ -63,7 +63,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{tipoUsuarioId}/{ciudadId}")
-    public ResponseEntity<Usuario> updateProducto(@PathVariable("tipoUsuarioId") Long tipoUsuarioId,
+    public ResponseEntity<Usuario> updateUsuario(@PathVariable("tipoUsuarioId") Long tipoUsuarioId,
                                                   @PathVariable("ciudadId") Long ciudadId,
                                                   @RequestBody Usuario usuario){
         if(usuario != null){
@@ -72,8 +72,6 @@ public class UsuarioController {
             Optional<Usuario> usuarios = usuarioRepository.findById(usuario.getId());
             TipoUsuario tipoUsuario = tipoUsuarioOptional.get();
             Ciudad ciudad = ciudadOptional.get();
-            usuario.setTipoUsuario(tipoUsuario);
-            usuario.setCiudad(ciudad);
             Usuario updateUsuario = usuarios.get();
             updateUsuario.setId(usuario.getId());
             updateUsuario.setPrimerNombre(usuario.getPrimerNombre());
@@ -83,8 +81,9 @@ public class UsuarioController {
             updateUsuario.setEmail(usuario.getEmail());
             updateUsuario.setClave(usuario.getClave());
             updateUsuario.setDireccion(usuario.getDireccion());
-            updateUsuario.setTipoUsuario(usuario.getTipoUsuario());
-            updateUsuario.setCiudad(usuario.getCiudad());
+            updateUsuario.setFechaNacimiento(usuario.getFechaNacimiento());
+            updateUsuario.setTipoUsuario(tipoUsuario);
+            updateUsuario.setCiudad(ciudad);
             usuarioRepository.save(updateUsuario);
             return ResponseEntity.ok(updateUsuario);
         }else{
@@ -92,6 +91,67 @@ public class UsuarioController {
         }
     }
 
-    // Implementar metodo Patch
+    @PatchMapping(value = "{usuarioId}/{tipoUsuarioId}/{ciudadId}")
+    public ResponseEntity<Usuario> partialUpdateUsuario(@PathVariable("tipoUsuarioId") Long tipoUsuarioId,
+                                                          @PathVariable("ciudadId") Long ciudadId,
+                                                           @PathVariable("usuarioId") Long usuarioId,
+                                                          @RequestBody Usuario usuario){
+        Optional<TipoUsuario> tipoUsuarioOptional = tipoUsuarioRepository.findById(tipoUsuarioId);
+        Optional<Ciudad> ciudadOptional = ciudadRepository.findById(ciudadId);
+        Optional<Usuario> usuarios = usuarioRepository.findById(usuarioId);
+        TipoUsuario tipoUsuario = tipoUsuarioOptional.get();
+        Ciudad ciudad = ciudadOptional.get();
+        if(usuarios.isPresent()){
+            Usuario partialUpdateUsuario = usuarios.get();
+            if(usuario.getId() != null){
+                partialUpdateUsuario.setId(usuario.getId());
+            }
+
+            if(usuario.getPrimerNombre() != null){
+                partialUpdateUsuario.setPrimerNombre(usuario.getPrimerNombre());
+            }
+
+            if(usuario.getOtrosNombres() != null){
+                partialUpdateUsuario.setOtrosNombres(usuario.getOtrosNombres());
+            }
+
+            if(usuario.getApellidos() != null){
+                partialUpdateUsuario.setApellidos(usuario.getApellidos());
+            }
+
+            if(usuario.getCelular() != null){
+                partialUpdateUsuario.setCelular(usuario.getCelular());
+            }
+
+            if(usuario.getEmail() != null){
+                partialUpdateUsuario.setEmail(usuario.getEmail());
+            }
+
+            if(usuario.getClave() != null){
+                partialUpdateUsuario.setClave(usuario.getClave());
+            }
+
+            if(usuario.getDireccion() != null){
+                partialUpdateUsuario.setDireccion(usuario.getDireccion());
+            }
+
+            if(usuario.getFechaNacimiento() != null){
+                partialUpdateUsuario.setFechaNacimiento(usuario.getFechaNacimiento());
+            }
+
+            if(usuario.getTipoUsuario() != null){
+                partialUpdateUsuario.setTipoUsuario(tipoUsuario);
+            }
+
+            if(usuario.getCiudad() != null){
+                partialUpdateUsuario.setCiudad(ciudad);
+            }
+
+            usuarioRepository.save(partialUpdateUsuario);
+            return ResponseEntity.ok(partialUpdateUsuario);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
