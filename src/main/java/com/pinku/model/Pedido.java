@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "pinku_pedido")
@@ -42,6 +43,9 @@ public class Pedido {
     @JoinColumn(name = "id_usuario", nullable = true)
     @JsonIgnore
     private Usuario usuario;
+
+    @Transient
+    private List<DetallePedido> items;
 
     public Pedido() {
 
@@ -114,4 +118,11 @@ public class Pedido {
         this.usuario = usuario;
     }
 
+    public List<DetallePedido> getItems() {
+        return items;
+    }
+
+    public void setItems(List<DetallePedido> items) {
+        this.items = items;
+    }
 }

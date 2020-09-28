@@ -1,9 +1,11 @@
 package com.pinku.controller;
 
 import com.pinku.model.Ciudad;
+import com.pinku.model.DetallePedido;
 import com.pinku.model.Pedido;
 import com.pinku.model.Usuario;
 import com.pinku.repository.CiudadRepository;
+import com.pinku.repository.DetallePedidoRepository;
 import com.pinku.repository.PedidoRepository;
 import com.pinku.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,15 @@ public class PedidoController {
     @Autowired
     private CiudadRepository ciudadRepository;
 
+    @Autowired
+    private DetallePedidoRepository detallePedidoRepository;
+
     @GetMapping
     public ResponseEntity<List<Pedido>> getPedido(){
         List<Pedido> pedidos = (List<Pedido>) pedidoRepository.findAll();
+        for(Pedido p:pedidos){
+            p.setItems(detallePedidoRepository.findAllByPedido(p));
+        }
         return ResponseEntity.ok(pedidos);
     }
 
@@ -36,7 +44,9 @@ public class PedidoController {
     public ResponseEntity<Pedido> getPedidoById(@PathVariable("pedidoId") Pedido pedido){
         if(pedido != null){
             Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedido.getId());
-            return ResponseEntity.ok(pedidoOptional.get());
+            Pedido newPedido = pedidoOptional.get();
+            newPedido.setItems(detallePedidoRepository.findAllByPedido(newPedido));
+            return ResponseEntity.ok(newPedido);
         }else{
             return ResponseEntity.noContent().build();
         }
