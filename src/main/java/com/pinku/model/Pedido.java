@@ -44,9 +44,6 @@ public class Pedido {
     @JsonIgnore
     private Usuario usuario;
 
-    @Transient
-    private List<DetallePedido> items;
-
     public Pedido() {
 
     }
@@ -118,11 +115,4 @@ public class Pedido {
         this.usuario = usuario;
     }
 
-    public List<DetallePedido> getItems() {
-        return items;
-    }
-
-    public void setItems(List<DetallePedido> items) {
-        this.items = items;
-    }
 }

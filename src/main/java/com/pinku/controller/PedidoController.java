@@ -1,17 +1,16 @@
 package com.pinku.controller;
 
+import com.pinku.api.dto.PedidoDTO;
 import com.pinku.model.Ciudad;
 import com.pinku.model.DetallePedido;
 import com.pinku.model.Pedido;
 import com.pinku.model.Usuario;
-import com.pinku.repository.CiudadRepository;
-import com.pinku.repository.DetallePedidoRepository;
-import com.pinku.repository.PedidoRepository;
-import com.pinku.repository.UsuarioRepository;
+import com.pinku.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,22 +30,41 @@ public class PedidoController {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
+    @Autowired
+    private CicloPedidoRepository cicloPedidoRepository;
+
     @GetMapping
-    public ResponseEntity<List<Pedido>> getPedido(){
+    public ResponseEntity<List<PedidoDTO>> getPedido(){
         List<Pedido> pedidos = (List<Pedido>) pedidoRepository.findAll();
+        List<PedidoDTO> pedidosDTO =  new ArrayList<PedidoDTO>();
         for(Pedido p:pedidos){
-            p.setItems(detallePedidoRepository.findAllByPedido(p));
+            PedidoDTO pedidoDTO = new PedidoDTO();
+            pedidoDTO.setId(p.getId());
+            pedidoDTO.setDireccionEntrega(p.getDireccionEntrega());
+            pedidoDTO.setNombreDestinatario(p.getNombreDestinatario());
+            pedidoDTO.setObservaciones(p.getObservaciones());
+            pedidoDTO.setTotal(p.getTotal());
+            pedidoDTO.setItems(detallePedidoRepository.findAllByPedido(p));
+            // Obtener ciclo del pedido
+            pedidosDTO.add(pedidoDTO);
         }
-        return ResponseEntity.ok(pedidos);
+        return ResponseEntity.ok(pedidosDTO);
     }
 
     @RequestMapping(value = "{pedidoId}")
-    public ResponseEntity<Pedido> getPedidoById(@PathVariable("pedidoId") Pedido pedido){
+    public ResponseEntity<PedidoDTO> getPedidoById(@PathVariable("pedidoId") Pedido pedido){
         if(pedido != null){
             Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedido.getId());
-            Pedido newPedido = pedidoOptional.get();
-            newPedido.setItems(detallePedidoRepository.findAllByPedido(newPedido));
-            return ResponseEntity.ok(newPedido);
+            PedidoDTO pedidoDTO = new PedidoDTO();
+
+            pedidoDTO.setId(pedidoOptional.get().getId());
+            pedidoDTO.setDireccionEntrega(pedidoOptional.get().getDireccionEntrega());
+            pedidoDTO.setNombreDestinatario(pedidoOptional.get().getNombreDestinatario());
+            pedidoDTO.setObservaciones(pedidoOptional.get().getObservaciones());
+            pedidoDTO.setTotal(pedidoOptional.get().getTotal());
+            pedidoDTO.setItems(detallePedidoRepository.findAllByPedido(pedidoOptional.get()));
+            pedidoDTO.setCiclo(cicloPedidoRepository.findAllByPedido(pedidoOptional.get()));
+            return ResponseEntity.ok(pedidoDTO);
         }else{
             return ResponseEntity.noContent().build();
         }
@@ -134,7 +152,7 @@ public class PedidoController {
                 partialUpdatePedido.setObservaciones(pedido.getObservaciones());
             }
 
-            if(pedido.getTotal() != partialUpdatePedido.getTotal()){
+            if((pedido.getTotal() != partialUpdatePedido.getTotal()) && (pedido.getTotal() != 0.0)){
                 partialUpdatePedido.setTotal(pedido.getTotal());
             }
 

@@ -119,7 +119,7 @@ public class UsuarioController {
                 partialUpdateUsuario.setApellidos(usuario.getApellidos());
             }
 
-            if(usuario.getCelular() != null){
+            if((usuario.getCelular() != null) && (usuario.getCelular() != 0)){
                 partialUpdateUsuario.setCelular(usuario.getCelular());
             }
 

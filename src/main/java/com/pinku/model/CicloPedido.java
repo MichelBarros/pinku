@@ -25,7 +25,6 @@ public class CicloPedido {
 
     @ManyToOne
     @JoinColumn(name = "id_estado_pedido", nullable = false)
-    @JsonIgnore
     private EstadoPedido estadoPedido;
 
     public CicloPedido() {

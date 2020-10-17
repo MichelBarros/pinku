@@ -1,36 +1,16 @@
-package com.pinku.model;
+package com.pinku.api.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "pinku_ciudad")
-public class Ciudad {
+public class CiudadDTO implements Serializable {
 
-    @Id
     private Long id;
 
-    @NotNull
     private String departamento;
 
-    @NotNull
     private String ciudad;
 
-    @NotNull
     private String region;
-
-    public Ciudad() {
-
-    }
-
-    public Ciudad(Long id, @NotNull String departamento, @NotNull String ciudad, @NotNull String region) {
-        this.id = id;
-        this.departamento = departamento;
-        this.ciudad = ciudad;
-        this.region = region;
-    }
 
     public Long getId() {
         return id;
