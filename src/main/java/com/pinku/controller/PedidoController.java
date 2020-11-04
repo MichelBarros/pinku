@@ -1,12 +1,14 @@
 package com.pinku.controller;
 
 import com.pinku.api.dto.PedidoDTO;
+import com.pinku.api.dto.PedidoInsertDTO;
 import com.pinku.api.services.IDetailService;
 import com.pinku.model.Ciudad;
 import com.pinku.model.DetallePedido;
 import com.pinku.model.Pedido;
 import com.pinku.model.Usuario;
 import com.pinku.repository.*;
+import com.pinku.service.CycleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,9 @@ public class PedidoController {
 
     @Autowired
     private CicloPedidoRepository cicloPedidoRepository;
+
+    @Autowired
+    private CycleServiceImpl cycleService;
 
     @Autowired
     private IDetailService iDetailService;
@@ -78,35 +83,38 @@ public class PedidoController {
     @PostMapping(value = "/{usuarioId}/{ciudadId}")
     public ResponseEntity<Pedido> createPedido(@PathVariable("usuarioId") Long usuarioId,
                                                @PathVariable("ciudadId") Long ciudadId,
-                                               @RequestBody @Valid PedidoDTO pedidoDTO){
+                                               @RequestBody @Valid PedidoInsertDTO pedidoInsertDTO){
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
         Optional<Ciudad> ciudadOptional = ciudadRepository.findById(ciudadId);
         Usuario usuario = usuarioOptional.get();
         Ciudad ciudad = ciudadOptional.get();
         Pedido pedido = new Pedido();
-        pedido.setDireccionEntrega(pedidoDTO.getDireccionEntrega());
-        pedido.setNombreDestinatario(pedidoDTO.getNombreDestinatario());
-        pedido.setObservaciones(pedidoDTO.getObservaciones());
-        pedido.setTotal(pedidoDTO.getTotal());
+        pedido.setDireccionEntrega(pedidoInsertDTO.getDireccionEntrega());
+        pedido.setNombreDestinatario(pedidoInsertDTO.getNombreDestinatario());
+        pedido.setObservaciones(pedidoInsertDTO.getObservaciones());
+        pedido.setTotal(pedidoInsertDTO.getTotal());
         pedido.setUsuario(usuario);
         pedido.setCiudad(ciudad);
         Pedido newPedido = pedidoRepository.save(pedido);
-        iDetailService.SaveItems(pedidoDTO.getItems(), newPedido);
-        
+        iDetailService.SaveItems(pedidoInsertDTO.getItems(), newPedido);
+        cycleService.SetCycle(newPedido);
         return ResponseEntity.ok(newPedido);
     }
 
     @PostMapping(value = "/{usuarioId}")
     public ResponseEntity<Pedido> createPedido(@PathVariable("usuarioId") Long usuarioId,
-                                               @RequestBody Pedido pedido){
+                                               @RequestBody PedidoInsertDTO pedidoInsertDTO){
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioId);
         Usuario usuario = usuarioOptional.get();
+        Pedido pedido = new Pedido();
         pedido.setUsuario(usuario);
+        pedido.setTotal(pedidoInsertDTO.getTotal());
         pedido.setDireccionEntrega(usuario.getDireccion());
         pedido.setNombreDestinatario(usuario.getPrimerNombre() + " " + usuario.getApellidos());
         pedido.setCiudad(usuario.getCiudad());
         Pedido newPedido = pedidoRepository.save(pedido);
-        // Refactorizar
+        iDetailService.SaveItems(pedidoInsertDTO.getItems(), newPedido);
+        cycleService.SetCycle(newPedido);
         return ResponseEntity.ok(newPedido);
     }
 
