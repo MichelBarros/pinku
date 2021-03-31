@@ -1,11 +1,13 @@
 package com.pinku.model;
 
 import com.pinku.generator.StringPrefixedSequenceIdProductGenerator;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Table(name = "pinku_producto")
 public class Producto {
@@ -35,30 +37,6 @@ public class Producto {
     public Producto(String id, @NotNull String tipo, @NotNull double precio) {
         this.id = id;
         this.tipo = tipo;
-        this.precio = precio;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
         this.precio = precio;
     }
 

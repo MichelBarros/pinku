@@ -1,9 +1,12 @@
 package com.pinku.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name="pinku_tipo_usuario")
 public class TipoUsuario {
@@ -21,22 +24,6 @@ public class TipoUsuario {
 
     public TipoUsuario(Long id, @NotNull String tipo) {
         this.id = id;
-        this.tipo = tipo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 

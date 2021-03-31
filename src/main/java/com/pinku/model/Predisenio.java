@@ -2,11 +2,13 @@ package com.pinku.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pinku.generator.StringPrefixedSequenceIdProductGenerator;
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Table(name = "pinku_predisenio")
 public class Predisenio {
@@ -41,27 +43,4 @@ public class Predisenio {
         this.producto = producto;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getRuta() {
-        return ruta;
-    }
-
-    public void setRuta(String ruta) {
-        this.ruta = ruta;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
 }

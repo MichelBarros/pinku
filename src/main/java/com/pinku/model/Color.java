@@ -1,8 +1,11 @@
 package com.pinku.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Table(name = "pinku_color")
 public class Color {
@@ -27,27 +30,4 @@ public class Color {
         this.nombreColor = nombreColor;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getNombreColor() {
-        return nombreColor;
-    }
-
-    public void setNombreColor(String nombreColor) {
-        this.nombreColor = nombreColor;
-    }
 }

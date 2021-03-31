@@ -1,8 +1,11 @@
 package com.pinku.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Table(name = "pinku_estado_pedido")
 public class EstadoPedido {
@@ -26,27 +29,4 @@ public class EstadoPedido {
         this.cierra = cierra;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public boolean isCierra() {
-        return cierra;
-    }
-
-    public void setCierra(boolean cierra) {
-        this.cierra = cierra;
-    }
 }
